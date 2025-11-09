@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.ex'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0-T1'
 description = 'Spring Boot 3 Batch'
 
 java {
@@ -25,17 +25,34 @@ repositories {
 }
 
 dependencies {
+    //Spring
 	implementation 'org.springframework.boot:spring-boot-starter-batch'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    //Outer
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'org.apache.kafka:kafka-streams'
+
+    //DB
+    //implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	//runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+    testImplementation "com.h2database:h2"
+
+    //Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    //Test
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.batch:spring-batch-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
+    jvmArgs "-Xshare:off"                       // OpenJDK 64-Bit Server VM warning:
+    jvmArgs "-XX:+EnableDynamicAgentLoading"    // Mockito Error
 	useJUnitPlatform()
+
 }
